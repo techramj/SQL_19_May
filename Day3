@@ -1,0 +1,260 @@
+--Rules:
+--1. SQL is not case sensitive
+--2. literal should be written in single quote
+--3. literal are case sensitive
+--4. date are format sensitive
+--5. default format of date: DD-Mon-RR 
+
+
+--Clasue  from -> where -> select -> order by
+  --1.  from
+  --2. where
+  --3. order by (last clause)
+
+--structure of table use describe or desc command
+desc employees;  
+
+select * from employees;
+select * from departments;
+
+--restrict the row
+--  syntax
+/*
+select [col1],[col2],.... 
+from table_name
+where [condition]
+
+eg: where salary>5000
+       where employee_id =105
+       
+--conditional operator
+>  
+>=
+<
+<=
+=
+!=  <>  ^=
+IN
+BETWEEN AND
+LIKE
+IS
+
+--logical operator
+AND  
+OR 
+NOT 
+
+*/
+
+--eg1 : list of employees with column employee_id,last_name,salary whose salary is greater than 15000
+select employee_id,last_name,salary
+from employees
+where salary>15000;
+
+-- list of employee whose salary<4000
+select *
+from employees
+where salary < 4000;
+
+--who is working in department 20
+select * from employees
+where department_id=20;
+
+--list of employees who is working in dept 20 and 30
+select employee_id,last_name,salary, department_id
+from employees
+where department_id  = 20  or  department_id=30;  
+
+--or
+
+select employee_id,last_name,salary, department_id
+from employees
+where department_id in (20,30);  
+
+
+--who is not working in dept 50
+select * from employees
+where department_id != 50;
+
+--or
+
+select * from employees
+where department_id  <>  50;
+
+--or
+
+select * from employees
+where department_id ^= 50;
+
+--who is not working in dept 50 and 80
+
+select employee_id,last_name,salary, department_id
+from employees
+where department_id  ! = 50  and department_id != 80; 
+
+--or
+
+select employee_id,last_name,salary, department_id
+from employees
+where department_id  not in (50,80); 
+
+
+--who is working id dept 10 20 40 60 70
+select employee_id,last_name,salary, department_id
+from employees
+where department_id  in (10,20,40,60,70);
+
+
+--employes  salary  between 5000 and 8000
+
+select *
+from employees
+where salary>=5000 and salary<=8000;
+
+--or
+select * 
+from employees
+where salary between 5000 and 8000;
+
+
+--employes  salary  not between 5000 and 8000
+
+select * 
+from employees
+where salary not between 5000 and 8000;
+
+--employes working in dept 50 and 80 and salary is between 5000 and 8000
+
+select *
+from employees
+where (department_id =50 or department_id=80)
+and (salary>=5000 and salary<=8000);
+
+--or
+select *
+from employees
+where  department_id in (50,80)
+and salary between 5000 and 8000;
+
+
+-- whose annual salary<50000
+SELECT  last_name, salary*12 as annsal
+from employees;
+
+--details of emp whose name is King
+
+select * from employees
+where last_name  = 'King';
+
+
+-- employees hire on 17-Jun-03
+select last_name, hire_date 
+from employees
+where hire_date='17-Jun-03'; 
+
+
+
+select * from employees;
+
+
+--employees hired in month of may -2003
+select last_name, hire_date 
+from employees
+where hire_date between '1-may-03' and '31-may-03';
+
+
+--employees hired in month of may
+select last_name, hire_date 
+from employees
+where hire_date between '1-may-03' and '31-may-03'
+or hire_date between '1-may-04' and '31-may-04'
+or hire_date between '1-may-05' and '31-may-05'
+or hire_date between '1-may-06' and '31-may-06';  --query is not correct
+
+select last_name, hire_date 
+from employees
+where hire_date like '%MAY%';
+
+-- employees name start with letter A
+
+select * from employees
+where last_name like 'C%';
+
+
+--employees whose name contain letter x
+select * from employees
+where last_name like '%x%';           
+
+
+--Day 3:
+
+select * from employees
+where last_name like '%a%e%'
+or last_name like '%e%a%'; 
+
+select * from employees
+where last_name like '%a%'
+and last_name like '%e%'; 
+
+--employees hired in year 2003
+select * from employees
+where hire_date like '%03';   
+
+
+--order by use to sort the column
+select last_name,salary,department_id
+from employees
+order by salary desc;
+
+select last_name,salary,department_id
+from employees
+order by salary desc,department_id;
+
+--name,salary in sorted order of department_id
+select last_name,salary
+from employees
+order by department_id;
+
+
+--last_name and annual_sal for those emp whose ann sal >80000 and sort by ann sal
+--from -> where -> select -> order by
+
+select last_name, salary*12 as annsal
+from employees
+where salary*12>80000
+order by annsal;
+
+
+--handle with null
+select last_name, department_id , commission_pct
+from employees
+order by commission_pct desc nulls  last;
+
+--employee with no comm
+select last_name, department_id , commission_pct
+from employees
+where commission_pct is  null;  --null mean i don't know
+
+select last_name,commission_pct+1
+from employees;
+
+select last_name, department_id , commission_pct
+from employees
+where department_id in (10,20,null);
+
+
+select last_name, department_id , commission_pct
+from employees
+where department_id not in (50,80,null);
+
+
+
+
+
+
+
+
+
+
+
+     
