@@ -1,0 +1,7 @@
+1. step one: Login to system
+CMD: conn system/system  
+
+
+Step 2:
+alter user hr identified by hr account unlock;
+
