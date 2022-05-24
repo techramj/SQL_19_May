@@ -1,0 +1,116 @@
+--from
+--where
+--order by
+
+--from  -> where -> select -> order by
+
+
+--function
+
+--1. single row function
+     --a. char function
+      --1 lower, upper, initcap
+      select lower('abc Def EFG') , upper('abc Def EFG') , initcap('abc Def EFG') 
+      from dual;
+      
+      select * from employees
+      where lower(last_name) ='king';   KiNg  KING  king
+
+
+    --WAQ to find the detail of employees  name propted at runtime
+    select upper(last_name) from employees
+    where lower(last_name) = lower('&name');
+    
+    
+    
+    select substr('abcdefg',4) from dual;
+    
+    select substr('abcdefg',4, 3) from dual;
+    
+    select substr('abcdeg',-3) from dual;
+    
+    select substr('abcdeg',-3,2) from dual;
+       
+    select substr('abcdeg',-3,-2) from dual;
+    
+    
+    select instr('abcdefabcbbbb', 'b', 4) from dual;
+    
+    select instr('abcdefabcbbbb', 'b', 4, 3) from dual;
+    
+    --WAQ to find the name of emp whose fname and lname start with same character
+    --eg sonu sood
+    select first_name,last_name
+    from employees 
+    where substr(first_name,1,1) = substr( last_name,1,1);
+    
+    
+    --WAP to find the name of emp start and end with same letter
+    --EG: sus
+    
+      select first_name,last_name
+    from employees 
+    where lower(substr(last_name,1,1)) = lower(substr( last_name,-1,1));
+    
+    
+    select rpad('abcde', 8, '*') from dual;
+    
+    
+    select length('12345') from dual;
+    
+    select '  abc def  ' , length('  abc def  ' ), trim('  abc def  ' ),
+    ltrim('  abc def  ' ), rtrim('  abc def  ' )
+    from dual;
+    
+    select  rownum, last_name, salary 
+    from employees
+    where rownum <= 1;
+    
+    select  lpad('*' , rownum,'*') from employees
+    where rownum<=5;
+    
+     select lpad(' ' ,5- rownum,' ')|| lpad('*' , 2*rownum-1,'*') from employees
+    where rownum<=5;
+    
+    
+    select concat(concat('abc','def'),'ghi') from dual;
+    
+    select 'abc'||'def'||'ghi' from dual;
+    
+    
+    select  mod(4,3) from dual;
+    
+    select abs(-5), abs(5) from dual;
+    
+    
+    
+    --round
+      123837.4927 ,2   =>123837.49
+       123837.4927 ,3   =>123837.493
+       
+    123837.4927 ,-2   =>123800
+      123837.4927 ,-3   =>124000
+      
+      
+       --trunc
+      123837.4927 ,2   =>123837.49
+       123837.4927 ,3   =>123837.492
+       
+    123837.4927 ,-2   =>123800
+      123837.4927 ,-3   =>123000
+    
+    
+    select  floor(-10.1), trunc(-10.1), round(-10.1), ceil(-10.1) 
+    from dual;
+    
+    
+    
+    
+
+    
+
+
+
+
+
+--2. multiple row function
