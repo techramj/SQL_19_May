@@ -1,0 +1,52 @@
+Single row function
+     a>Char function
+      1. lower(str)
+      2. upper(str)
+      3. initcap(str)
+      4. substr(str,start_position,[length])
+      5. instr(str, search_str, [position], [occurence])
+      6. lpad(str,length, padding_char)
+      7. rpad(str,length, padding_char)
+      9. trim, ltrim, rtrim
+      10. length(str)
+      11. concat(str1,str2)
+      
+     
+     b>number function
+       1. round
+       2. trunc
+       3. mod
+       4. abc
+       5. ceil
+       6. floor
+    
+     c>date function
+       1. sysdate
+       2. add_months(date,number)
+       3. next_day(date,'day_format')
+       4. last_day(date)
+       5. months_between(date1, date2)
+       
+       
+     d>conversion function
+       1. to_char
+       2. to_number
+       3. to_date
+     
+     
+     e>general function
+     1. nvl(exp1, exp2)
+     2. nvl2(exp1, exp2, exp3)
+     3. coalesce(exp1,exp2,exp3....)
+     4.case
+     5. decode
+     6. nullif(exp1, exp2)
+
+Multiple row/ group / aggregate function
+ 1. count
+ 2. sum
+ 3. min
+ 4. max
+ 5. avg
+
+
