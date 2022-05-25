@@ -1,0 +1,215 @@
+--waq to find the name of employee contain letter a  or i.
+Jack
+Jim
+dont use like operator
+;
+
+select * from employees
+where last_name like '%a%' 
+or last_name like '%i%';
+
+select * from employees
+where instr(last_name ,'a') !=0 
+or  instr(last_name ,'i')!=0;
+
+
+--Date function
+rule: 
+ 0. date contain day, month, year, hour, minute, second
+ 1.we can add or subtract number to/from the date.
+ 2. we can subtract two date which gives no of days between two date
+
+
+select last_name,hire_date,sysdate-hire_date as no_of_days
+from employees;
+
+select last_name,hire_date,trunc(sysdate-hire_date) as no_of_days,
+trunc((sysdate-hire_date)/30) as no_of_months ,
+trunc(months_between(sysdate, hire_date))
+from employees;
+
+
+select add_months(sysdate,3) from dual;  
+
+
+select next_day(sysdate,'sun') from dual;
+
+select last_day(sysdate) from dual;
+
+--WAQ to find employees hired in leap month  14 -feb-2000
+select last_name,hire_date , last_day(hire_date)
+from employees
+where last_day(hire_date) like '29%'
+;
+
+--WAQ to find the date of get together.  after six month, first sunday
+
+select next_day(add_months(sysdate,6) ,'Sun')
+from dual;
+
+--WAQ to find the no of years from current date , employee hired. round to non decimal.
+
+select employee_id,last_name,hire_date,
+round(months_between(sysdate,hire_date)/12,1) as no_of_year
+from employees;
+
+--Conversion function
+--implicit
+--explicit
+
+select '12'+'11,20,0.5' , 12 from dual;
+
+            to_char           to_date
+Number              Char                Date
+           to_number        to_char
+
+;
+1.
+to_char(date, format_specifier)
+
+select to_char(sysdate,'DD-MON-yy hh:mi:ss') from dual;
+
+Monday 5, Jun 1999;
+
+select last_name,hire_date, to_char(hire_date,'fmDay ddspth, Mon YYYY')
+from employees;
+
+
+--WAQ to find the employees hired on monday
+
+
+select last_name,hire_date,to_char(hire_date,'day')
+from employees
+where trim(to_char(hire_date,'day'))='monday';
+
+select last_name,hire_date,to_char(hire_date,'day')
+from employees
+where to_char(hire_date,'fmday')='monday';
+
+select last_name,hire_date,to_char(hire_date,'dy')
+from employees
+where to_char(hire_date,'dy')='mon';
+
+
+to_char(number)
+select last_name,salary, to_char(salary,'99,99,99,999.00')
+from employees;
+
+
+--format specifier: https://docs.oracle.com/database/121/SQLRF/sql_elements004.htm#SQLRF00212
+
+-- convert string to date
+select to_date('2-jan-21','dd-mon-rr')+1000 from dual;
+
+--convert  string to number
+select to_number('12', '99')+to_number('11,20,0.5' ,'99,99,9.0')   from dual;
+select to_number('1,234.00','9,999.00') from dual;
+
+--slect name hire date and sort it by day (start with monday )
+select last_name, hire_date, to_Char(hire_date,'Dy'),to_Char(hire_date-1,'D')
+from employees
+order by to_Char(hire_date-1,'D');
+
+--General function
+--1. nvl(exp1, exp2) if exp1 is null then exp2 \
+ --note exp1 and exp2 should be of same type
+
+
+select nvl(null,2) from dual;
+
+--WAQ to display nmae,salary, net salary(salary+salary*comm)
+select last_name,salary, commission_pct, 
+nvl(to_char(commission_pct),'No Comm'),
+salary+salary*nvl(commission_pct,0) as net_salary
+from employees;
+
+--2. nvl2(exp1, exp2, exp3) if exp1 is not null then exp2 else exp3
+--note: exp2 and exp3 should be of same type
+select last_name,salary, commission_pct, 
+nvl2(commission_pct,'Comm','No Comm'),
+salary+salary*nvl(commission_pct,0) as net_salary
+from employees;
+
+
+--3.coalesce(exp1, exp2,exp3,.....)
+select coalesce(null,null,null,null,5) from dual;
+
+select last_name,salary, commission_pct, 
+coalesce(to_char(commission_pct),'No Comm'),
+salary+salary*nvl(commission_pct,0) as net_salary
+from employees;
+
+--4 nullif(exp1,exp2) if exp1=exp2 then null else exp1
+select nullif(sysdate,sysdate+1) from dual;
+
+select nullif(20,2) from dual;
+
+
+--case
+
+select distinct job_id from employees;
+
+
+select last_name,job_id,salary,
+case when job_id='AD_PRES' then 1.1*salary
+        when job_id='AD_VP' then 1.15*salary
+        when job_id='IT_PROG' then 1.20*salary
+        else salary
+        end as new_salary
+from employees
+where job_id in ('AD_PRES','AD_VP','IT_PROG','AC_MGR')
+order by job_id;
+
+
+select last_name,job_id,salary,
+case job_id when 'AD_PRES' then 1.1*salary
+        when 'AD_VP' then 1.15*salary
+        when 'IT_PROG' then 1.20*salary
+        else salary
+        end as new_salary
+from employees
+where job_id in ('AD_PRES','AD_VP','IT_PROG','AC_MGR')
+order by job_id;
+
+
+
+select last_name,job_id,salary,
+decode ( job_id , 'AD_PRES' , 1.1*salary
+        , 'AD_VP' , 1.15*salary
+        , 'IT_PROG' , 1.20*salary
+        , salary
+        ) as new_salary
+from employees
+where job_id in ('AD_PRES','AD_VP','IT_PROG','AC_MGR')
+order by job_id;
+
+
+select decode(1,
+                        2,3,
+                        4,5,
+                        1,3,
+                        4,2,
+                        5) from dual;
+
+
+select decode(1,  2,1,  2,3,   6) from dual;
+
+
+SALARY SALARY>20000 HIKE 5%
+SALARY >15000 HIKE OF 10
+>10000 HIKE OF 15
+>5 HIKE OF 20
+DOUBLE
+
+
+SELECT LAST_NAME,SALARY, 
+CASE WHEN SALARY>20000 THEN 1.05*SALARY
+         WHEN SALARY>15000 THEN 1.1*SALARY
+         WHEN SALARY>10000 THEN 1.15*SALARY
+         WHEN SALARY>5000 THEN 1.2*SALARY
+         ELSE SALARY*2
+         END AS NEW_SALARY
+FROM EMPLOYEES
+ORDER BY SALARY;
+     
+
