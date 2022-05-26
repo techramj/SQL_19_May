@@ -49,4 +49,10 @@ Multiple row/ group / aggregate function
  4. max
  5. avg
 
+Rule:
+1. group functions not consider null except count(*)
+2. the column cannot be used in select if it is not mentioned in group by clause.
+3. The order of column in group clause will not impact on selection.(except report function such as rollup, cube)
+4. use where to restrict row and having clause to restrict group.
+5. max nested level of group function is 2.
 
