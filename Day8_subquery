@@ -1,0 +1,26 @@
+Rule:
+1. subquery should be written in bracket().
+2. use single row operator for single row subquery and multiple row operator for multiple row subquery
+3. use subquery on the right side 
+4. order by clause is not allowed in subquery except top-N query.
+
+
+
+
+
+
+Single row operator:
+>
+>=
+<
+<=
+=
+!= <>
+is
+between and
+
+Mutiple row operator
+IN
+any
+all
+
