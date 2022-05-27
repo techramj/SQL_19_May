@@ -24,3 +24,125 @@ IN
 any
 all
 
+--Subquery
+
+SELECT * FROM employees
+WHERE salary>10000;
+
+
+--WAQ to find the list of emp whose salary is greater than Abel salary
+
+SELECT salary FROM employees
+WHERE last_name='Abel';
+
+SELECT * FROM employees
+WHERE salary>11000;
+
+--we will combine the above two query
+
+SELECT * FROM employees
+WHERE salary>ALL(SELECT salary FROM employees
+              WHERE last_name='Abel');
+              
+SELECT * FROM employees
+WHERE (SELECT salary FROM employees
+              WHERE last_name='King') < salary; --don't use subquery on the left side
+              
+ SELECT salary FROM employees
+WHERE last_name='King';  --if this query is used in subquery => multiple row subquery
+
+SELECT salary FROM employees
+ WHERE employee_id=101; --if this query is used in subquery => single row subquery
+ 
+ 
+ --multiple row operator
+    
+   SELECT * FROM employees
+   WHERE salary >ANY (8000,12000) ;    
+   
+   
+ --WAQ to find the colleage of Kochhar
+ SELECT last_name,department_id FROM employees
+ WHERE department_id IN (SELECT department_id FROM employees 
+                        WHERE UPPER(last_name)=UPPER('&name')
+                        )
+ AND UPPER(last_name) != UPPER('&name');
+ 
+ 
+ --WAQ to find the name having max salary
+ SELECT last_name, salary
+ FROM employees
+ WHERE salary= (SELECT MAX(salary) FROM employees );
+ 
+ 
+ --waq to find the highest salary
+  SELECT MAX(salary) FROM employees;
+ 
+ --waq to find 2nd highest salary
+ SELECT MAX(salary) FROM employees
+ WHERE salary<(SELECT MAX(salary) FROM employees);
+ 
+ 
+ --waq TO find 3rd highest salary
+  SELECT MAX(salary) FROM employees
+  WHERE salary<(SELECT MAX(salary) FROM employees
+ WHERE salary<(SELECT MAX(salary) FROM employees));
+ 
+ 
+ SELECT min(salary) FROM 
+ (
+ SELECT DISTINCT salary
+ FROM employees
+ ORDER BY salary DESC
+ )
+ WHERE ROWNUM<=5;
+ 
+ 
+ --window function
+  
+ SELECT last_name,salary,RANK
+ FROM (
+ SELECT last_name,salary, dense_rank() OVER(ORDER BY salary DESC) AS RANK
+ FROM employees
+ )
+ WHERE RANK=5;
+ 
+  SELECT last_name,salary,RANK
+ FROM (
+ SELECT last_name,salary, rank() OVER(ORDER BY salary DESC) AS RANK
+ FROM employees
+ )
+ WHERE RANK=5;
+ 
+ 
+ 
+ select employee_id, last_name, salary 
+ from employees 
+ where salary>(select avg(salary)
+                from employees
+              )  
+ order by salary;
+ 
+ SELECT employee_id,last_name
+ FROM employees
+ WHERE department_id IN (SELECT department_id FROM employees WHERE LOWER(last_name) LIKE '%u%')
+ 
+ 
+ SELECT * FROM employees;
+ SELECT *  FROM departments;
+ SELECT  * FROM locations;
+ 
+ SELECT * FROM employees
+ WHERE department_id IN (SELECT department_id FROM departments
+                       WHERE location_id=1700);
+                       
+ SELECT * FROM employees
+ WHERE department_id IN (                       
+ SELECT department_id FROM departments 
+ WHERE location_id IN ( SELECT location_id FROM locations WHERE city='Toronto'));
+ 
+ 
+ 
+ 
+  
+  
