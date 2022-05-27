@@ -1,0 +1,53 @@
+--group function
+-- MIN MAX AVG SUM COUNT
+
+-- from -> where -> group by -> having-> select -> order by
+
+SELECT MIN(salary),MAX(salary), SUM(salary), AVG(salary), COUNT(salary), COUNT(*)
+FROM employees;
+
+--department wise sum of salary
+SELECT department_id,manager_id, SUM(salary)
+FROM employees
+GROUP BY department_id,manager_id
+ORDER BY department_id;
+
+SELECT department_id,manager_id, SUM(salary)
+FROM employees
+GROUP BY manager_id,department_id
+ORDER BY department_id;
+
+--waq to find department wise sum of salary of emp whose salary is greater than 8000 and sort it by salary.
+
+SELECT department_id, SUM(salary)
+FROM employees
+WHERE salary>8000
+GROUP BY department_id
+ORDER BY SUM(salary);
+
+
+SELECT department_id, SUM(salary)
+FROM employees
+GROUP BY department_id
+HAVING SUM(salary)>100000;
+
+--waq to display last_name , employee with max salary
+--name of emp having max salary
+
+SELECT last_name,SUM(salary) 
+FROM employees;
+
+SELECT last_name,salary
+FROM employees
+WHERE salary=MAX(salary);
+
+
+---nested of group function
+--single row function nesting
+
+SELECT CONCAT(UPPER(SUBSTR('abcde',2)),'xyz') FROM dual;
+
+
+SELECT MIN(AVG(SUM(salary)))
+FROM employees
+GROUP BY department_id;
