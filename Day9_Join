@@ -1,0 +1,143 @@
+Join:
+When data required from more than one table then we can use join.
+
+
+Rules:
+1. If column is present in both the table then qualifier is manadatory
+2. column part of using clause cannot have qualifier
+3. 
+
+Type of Join:
+1.Join with using clause
+   EG: SELECT employee_id,last_name,department_id, department_name
+      FROM employees JOIN departments
+      USING(department_id);
+   Limitation: if the column name is differnt in both table, cannot join using using clause
+               if the datatype is different then cannot join by using clause.
+               
+ 2. Join with On clause
+ 
+ 
+ 
+ 3. Inner Join
+ 
+ 
+ 
+ 
+ 4. Outer join
+     a. left outer join
+        SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+        FROM employees e LEFT OUTER JOIN departments d
+        ON e.department_id = d.department_id;
+     
+     b. right outer join
+          SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+          FROM employees e RIGHT OUTER JOIN departments d
+          ON e.department_id = d.department_id;
+     
+     c. full outer join
+     
+         SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+        FROM employees e FULL OUTER JOIN departments d
+        ON e.department_id = d.department_id;
+        
+        
+    5. equi join
+      --all the query above are equi join
+    
+    
+    
+    6. NON equi join
+       SELECT e.employee_id, e.last_name, e.salary, j.grade
+       FROM employees e  JOIN job_grades j
+        ON e.salary BETWEEN j.min_sal AND j.max_sal;
+        
+        
+     7. SELF JOIN: 
+        
+        
+        
+        
+        
+    
+--WAQ TO find NAME contain EXACT 3 a;
+
+SELECT * FROM employees
+WHERE LOWER(last_name) LIKE '%a%a%a';
+
+
+--WAQ TO find NAME contain atleast 3 a  ; eg: ananya, anaanaya
+SELECT * FROM employees
+WHERE INSTR(LOWER(last_name),'a',1,3)!=0 
+AND INSTR(LOWER(last_name),'a',1,4)=0
+
+SELECT employee_id,last_name,department_id, department_name
+FROM employees JOIN departments
+USING(department_id);  --consider deparment_id for joining
+
+SELECT employee_id,last_name,department_id, department_name,
+employees.manager_id, departments.manager_id AS dept_manager_id
+FROM employees JOIN departments
+USING(department_id);
+
+
+SELECT employee_id,last_name,employees.department_id, department_name
+FROM employees JOIN departments
+ON employees.department_id = departments.department_id;
+
+
+SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+FROM employees e JOIN departments d
+ON e.department_id = d.department_id;
+
+--left join
+SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+FROM employees e LEFT OUTER JOIN departments d
+ON e.department_id = d.department_id;
+
+
+--right join
+SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+FROM employees e RIGHT OUTER JOIN departments d
+ON e.department_id = d.department_id;
+
+
+--full outer join
+SELECT e.employee_id,e.last_name,d.department_id, d.department_name
+FROM employees e FULL OUTER JOIN departments d
+ON e.department_id = d.department_id;
+
+
+
+--ANSI SQL;
+
+SELECT employee_id,last_name,d.department_id, department_name
+FROM employees e , departments d
+WHERE e.department_id = d.department_id;
+
+--left join
+SELECT employee_id,last_name,d.department_id, department_name
+FROM employees e , departments d
+WHERE e.department_id = d.department_id(+);
+
+--right join
+SELECT employee_id,last_name,d.department_id, department_name
+FROM employees e , departments d
+WHERE e.department_id(+) = d.department_id;
+
+
+--full join(not allowed in old query)
+SELECT employee_id,last_name,d.department_id, department_name
+FROM employees e , departments d
+WHERE e.department_id(+) = d.department_id(+);  --not allowed
+
+
+
+
+
+
+
+
+
+
+
