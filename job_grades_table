@@ -1,0 +1,26 @@
+
+create table JOB_GRADES
+(
+  grade   CHAR(1),
+  min_sal NUMBER,
+  max_sal NUMBER
+);
+
+
+
+insert into job_grades (GRADE, MIN_SAL, MAX_SAL)
+values ('A', 20000, 50000);
+
+insert into job_grades (GRADE, MIN_SAL, MAX_SAL)
+values ('B', 15000, 19999);
+
+insert into job_grades (GRADE, MIN_SAL, MAX_SAL)
+values ('C', 10000, 14999);
+
+insert into job_grades (GRADE, MIN_SAL, MAX_SAL)
+values ('D', 5000, 9999);
+
+insert into job_grades (GRADE, MIN_SAL, MAX_SAL)
+values ('E', 0, 4999);
+
+COMMIT;
