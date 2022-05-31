@@ -54,6 +54,14 @@ Type of Join:
         
         
      7. SELF JOIN: 
+     
+     
+     
+     8. CROSS JOIN
+     
+     
+     
+     9. Natural Join
         
         
         
@@ -130,6 +138,55 @@ WHERE e.department_id(+) = d.department_id;
 SELECT employee_id,last_name,d.department_id, department_name
 FROM employees e , departments d
 WHERE e.department_id(+) = d.department_id(+);  --not allowed
+
+
+
+SELECT e.employee_id, e.last_name,e.manager_id,
+m.last_name AS manager_name
+FROM employees e LEFT OUTER JOIN employees m
+ON e.manager_id = m.employee_id
+ORDER BY e.employee_id;
+
+
+--last_name and colleage name
+FOR department 10,20,30,40,60
+  
+SELECT e.employee_id, e.last_name, e.department_id,
+c.last_name AS colleage_name
+FROM employees e JOIN employees c
+ON e.department_id = c.department_id
+AND e.employee_id != c.employee_id
+WHERE e.department_id IN (10,20,30,40,60);
+
+
+
+SELECT e.employee_id, e.last_name, d.department_name,
+l.city, c.country_name
+FROM employees e JOIN departments d
+ON e.department_id = d.department_id
+JOIN locations l
+ON l.location_id=d.location_id
+JOIN countries c
+ON c.country_id = l.country_id
+WHERE l.city='Toronto';
+
+
+SELECT e.employee_id, e.last_name, d.department_name,
+l.city, c.country_name
+FROM employees e , departments d, locations l, countries c
+WHERE e.department_id = d.department_id
+AND l.location_id=d.location_id
+AND  c.country_id = l.country_id
+AND l.city='Toronto';
+
+
+SELECT last_name,salary
+FROM employees 
+WHERE department_id IN (SELECT department_id FROM departments 
+                         WHERE location_id IN (SELECT location_id FROM locations 
+                                                WHERE city='Toronto')
+                                                );            
+
 
 
 
