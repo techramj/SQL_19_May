@@ -1,0 +1,237 @@
+FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY
+
+--schema
+
+DML
+  INSERT
+  UPDATE
+  DELETE
+
+DDL
+  CREATE
+  DROP
+  alter
+     --Modify table structure
+         --a. Add column
+         --b.  remove column
+         --c. modify the column
+ truncate
+
+DCL
+  GRANT
+     grant select on employees to user10;
+  REVOKE
+     revoke select on employees from user10;
+
+TCL
+  COMMIT
+  ROLLBACK
+  SAVEPOINT
+  
+  
+Usecase 1:
+   Create new user: SQL_BATCH_20
+   
+   create table emp
+   (id number,
+    name varchar2(20),
+    salary number);
+   
+   
+   
+   create table emp
+   as
+   select employee_id as id,last_name name,
+   salary , department_id as did
+   from employees;
+   
+   grant select on employees to sql_batch_20;
+   
+   
+   
+   
+View:
+
+  SELECT * FROM EMP;
+  delete emp where salary<5000;
+  update  emp set did=70 where id=100;
+  
+  --create new table excluding salary colum
+  create table emp_copy
+  as
+  select id,name,did from emp;
+  
+  select * from emp_copy;
+  
+    --create view excluding salary colum
+  create or replace view emp_vw
+  as
+  select id,name,did from emp;
+  
+  select * from emp_vw;
+  insert into emp_vw(id,name,did) values (10,'jack',30);
+  
+  select e.employee_id,e.last_name,e.salary, e.department_id,d.department_name,
+  l.location_id, l.city
+  from employees e join departments d 
+  on e.department_id= d.department_id
+  join locations l 
+  on l.location_id=d.location_id
+  where l.city='Toronto';
+  
+  create or replace view emp_detail
+  as
+  select e.employee_id,e.last_name,e.salary, e.department_id,d.department_name,
+  l.location_id, l.city
+  from employees e join departments d 
+  on e.department_id= d.department_id
+  join locations l 
+  on l.location_id=d.location_id;
+  
+  select * from emp_detail
+  --where city='Toronto';
+
+
+Sequence: nextval   currval
+   create sequence seq1;
+   
+   select seq1.nextval from dual;
+   
+   create sequence seq2
+   start with 10
+   increment by 10
+   nominvalue
+   nomaxvalue
+   nocycle
+   nocache;
+ 
+  select seq2.nextval from dual;  
+   select seq2.currval from dual;  
+   
+   
+    create sequence seq3
+   start with 10
+   increment by 10
+   nominvalue
+   maxvalue 50
+   nocycle
+   nocache;
+ 
+  select seq3.nextval from dual;  
+  
+  
+  create sequence seq4
+   start with 10
+   increment by 10
+   nominvalue
+   maxvalue 50
+   cycle
+   nocache;
+ 
+  select seq4.nextval from dual;  
+  
+  
+    create sequence seq5
+   start with 10
+   increment by 10
+   minvalue 5
+   maxvalue 50
+   cycle
+   nocache;
+ 
+  select seq5.nextval from dual;  
+  
+  
+   create sequence seq6
+   start with 10
+   increment by 10
+   cache 20;
+  
+  
+   select seq6.nextval from dual; 
+  
+  
+ select * from emp;
+ truncate table emp;
+ 
+ insert into emp(id,name,salary,did) values (seq1.nextval,'Jack',1000,10);
+ 
+create table t2(
+id number default seq1.nextval,
+name varchar2(10),
+salary number default 1000
+);
+
+insert into t1(id,name) values (1,'Jack');
+select * from t1;
+
+
+a= 1,2,3,4,4,5,6
+b= 2,4,4,6,8,10
+a union b = 1,2,3,4,5,6
+a intersect b = 2,4,6
+a minus b= 1,3,5
+b minus a = 8,10
+a union all b = 1,2,3,4,4,5,6,2,4,4,6,8,10
+
+
+create table cs(enroll_no varchar2(20), name varchar2(20));
+create table ec(enroll_no varchar2(20), name varchar2(20));
+
+insert into cs 
+select employee_id,last_name from employees 
+where department_id = 70;
+   
+insert into ec
+select employee_id,last_name from employees 
+where department_id = 70;
+
+select * from cs;
+select * from ec;
+
+select enroll_no,name from cs
+union
+select enroll_no,name from ec;
+
+
+select name as a, enroll_no from cs
+where name like '%a%'
+union
+select name, enroll_no from ec
+where name like '%b%'
+order by a;
+
+
+
+select enroll_no,name from cs
+intersect
+select enroll_no,name from ec;
+
+
+
+--waq to find the person who is not a manager
+select employee_id from employees
+minus
+select manager_id from employees;
+
+
+select employee_id from employees
+where employee_id not in (select nvl(manager_id,0) from employees)
+order by employee_id;
+   
+   
+employee_id,name,did from table
+to_char(employee_id),name,null from table2
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
