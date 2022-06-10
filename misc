@@ -1,0 +1,86 @@
+-- name of employees having maximum no of subordinate
+
+SELECT * FROM
+(
+SELECT ROWNUM AS RANK, manager_name,no_of_sub FROM (
+SELECT m.last_name AS manager_name, COUNT(*) AS no_of_sub
+FROM employees e JOIN employees m
+ON e.manager_id = m.employee_id
+GROUP BY m.last_name
+ORDER BY COUNT(*) DESC
+)
+)
+WHERE RANK=3;
+
+
+
+--co-related sub query
+
+SELECT * FROM employees e
+WHERE salary>ANY(SELECT salary FROM employees WHERE last_name='Abel');
+
+
+
+
+--nth highest salary
+SELECT MIN(salary) FROM (
+SELECT DISTINCT salary 
+FROM employees 
+ORDER BY salary DESC
+)
+WHERE ROWNUM<=4;
+
+SELECT * FROM (
+              SELECT salary, ROWNUM AS RANK
+              FROM (
+              SELECT DISTINCT salary 
+              FROM employees 
+              ORDER BY salary DESC)
+             )
+WHERE RANK=4;
+
+SELECT * FROM (
+SELECT salary,dense_rank() OVER(ORDER BY salary DESC) AS RANK
+FROM employees
+)
+WHERE RANK=4;
+
+
+SELECT last_name, salary
+FROM employees e
+WHERE 4-1 = (SELECT COUNT(DISTINCT salary) FROM employees
+              WHERE salary > e.salary);
+              
+              
+ 
+emp
+ID    NAME   
+1     Jack
+2     John
+3     Abel
+
+
+salaries
+ID    salary
+1     1000
+2     2000
+3     3000
+
+
+SELECT e.id, e.name,e.salary
+from emp e Join salaries s
+On e.id = s.id
+where e.salary > ANY (SELECT salary  FROM salaries
+                 WHERE ID IN (SELECT ID FROM emp WHERE NAME='Abel'));
+                 
+                 
+rjramjaiswal@gmail.com
+                 
+                 
+
+
+
+
+
+
+
